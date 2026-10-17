@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Report Writing Helper</title>
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--ink:#1f2430;--mute:#5b6270;--line:#dcdad2;--acc:#2a6f6b;--accbg:#e1f0ee;--ok:#2e7d32;--bad:#b3261e;--hl:#fff3c4;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181d;--card:#1e232b;--ink:#eceae4;--mute:#a4a9b4;--line:#333a45;--acc:#6cc3bc;--accbg:#1f3331;--ok:#7bd17f;--bad:#ff8a80;--hl:#4a4020;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15181d;--card:#1e232b;--ink:#eceae4;--mute:#a4a9b4;--line:#333a45;--acc:#6cc3bc;--accbg:#1f3331;--ok:#7bd17f;--bad:#ff8a80;--hl:#4a4020;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:18px 14px 40px}
+h1{font-size:1.5rem;margin:.2em 0}
+.sub{color:var(--mute);margin:0 0 14px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+nav button{flex:1 1 auto;padding:10px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--acc);color:var(--bg);border-color:var(--acc)}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.step{display:flex;gap:12px;align-items:flex-start}
+.num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--acc);color:var(--bg);display:grid;place-items:center;font-weight:700}
+.step h3{margin:0 0 2px;font-size:1.05rem}
+.step p{margin:2px 0;color:var(--mute)}
+.frame{background:var(--accbg);border-radius:8px;padding:6px 10px;margin-top:6px;font-style:italic}
+.tag{display:inline-block;font-size:.75rem;background:var(--hl);padding:1px 8px;border-radius:99px;margin-left:6px;font-style:normal;font-weight:400}
+.no{color:var(--bad)}.yes{color:var(--ok)}
+.fcin{min-height:190px;background:var(--card);border:2px solid var(--acc);border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer;font-size:1.1rem;user-select:none;margin:10px 0}
+.fcin .big{font-size:1.5rem;font-weight:700}
+.fcin .hint{color:var(--mute);font-size:.8rem;margin-top:10px}
+.ctrl{display:flex;gap:8px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.btn{padding:9px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;cursor:pointer}
+.btn.p{background:var(--acc);color:var(--bg);border-color:var(--acc);font-weight:600}
+.deck{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.deck .btn[aria-pressed="true"]{background:var(--accbg);border-color:var(--acc);font-weight:700}
+.cnt{color:var(--mute);font-size:.9rem}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;cursor:pointer}
+.opt.ok{border-color:var(--ok);background:var(--accbg)}
+.opt.bad{border-color:var(--bad)}
+.fb{margin-top:8px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+.scroll{overflow-x:auto}
+label.ck{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
+label.ck input{width:20px;height:20px;flex:none}
+.hang{padding-left:2em;text-indent:-2em}
+.note{background:var(--hl);border-radius:10px;padding:8px 12px;margin:10px 0}
+h3.t{margin:.2em 0 .4em}
+.gl{display:block;margin:10px 0 3px;font-weight:600;font-size:.9rem}
+.in{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+.out{background:var(--accbg);border-radius:10px;padding:10px 12px;margin:8px 0}
+.out small{display:block;color:var(--mute);font-weight:600;margin-bottom:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>✍️ Report Writing Helper</h1>
+<p class="sub">Stuck? Come back here. Pick a tab for the rule you need.</p>
+<nav role="tablist" id="tabs"></nav>
+
+<section id="s0">
+<div class="card"><b>One body paragraph = 7 parts</b> (plus an optional 3rd sub-idea and its evidence). Follow the order. Use at least <b>two different sources</b>. Each body paragraph develops <b>one focal point</b> from your thesis statement (Body 1 = focal point 1, and so on).</div>
+<div id="steps"></div>
+</section>
+
+<section id="s1">
+<div class="deck" id="decks"></div>
+<div class="fcin" id="fc" tabindex="0" role="button" aria-label="Flashcard. Press to flip."></div>
+<div class="ctrl">
+<button class="btn" id="prev">← Back</button>
+<span class="cnt" id="cnt"></span>
+<button class="btn" id="shuf">Shuffle</button>
+<button class="btn p" id="next">Next →</button>
+</div>
+</section>
+
+<section id="s2">
+<div class="card"><b>In-text citations (APA 7)</b>
+<div class="scroll"><table>
+<tr><th>Situation</th><th>Parenthetical</th><th>Narrative</th></tr>
+<tr><td>1 author</td><td>(Lee, 2021)</td><td>Lee (2021)</td></tr>
+<tr><td>2 authors</td><td>(Hassan &amp; Omar, 2022)</td><td>Hassan and Omar (2022)</td></tr>
+<tr><td>3 or more authors</td><td>(Ali et al., 2020)</td><td>Ali et al. (2020)</td></tr>
+<tr><td>Group author</td><td>(World Health Organization, 2020)</td><td>The World Health Organization (2020)</td></tr>
+<tr><td>No date</td><td>(Lee, n.d.)</td><td>Lee (n.d.)</td></tr>
+<tr><td>Same author, same year</td><td>(Lee, 2021a, 2021b)</td><td>Lee (2021a)</td></tr>
+<tr><td>Direct quote (rare)</td><td>(Lee, 2021, p. 14)</td><td>Lee (2021) states that “…” (p. 14)</td></tr>
+<tr><td>Video (no page)</td><td>(Khalil, 2021, 03:15)</td><td>Khalil (2021) says…</td></tr>
+</table></div>
+<div class="note"><b>3 or more authors:</b> APA 7 uses <i>et al.</i> from the <b>first</b> citation. In the <b>reference list</b>, you write all the authors’ names (up to 20).</div></div>
+<div class="card"><b>⚠️ Don’t depend on direct quotes.</b> Paraphrase or summarize most of the time. Quote only when the exact words matter (a definition, a powerful statement). A quote under 40 words goes in “quotation marks” with a page number; 40 words or more is a block quote. Try to have <b>zero or one short quote</b> per paragraph.</div>
+<div class="card"><b>Reference list rules</b><br>
+New page titled <b>References</b> · alphabetical by first author’s surname · hanging indent · double-spaced.
+<p class="cnt">Capital letters: the title of an article, webpage, video, or book = <b>sentence case</b>. Italics: the book, video, film, or webpage title, or the journal name + volume.</p></div>
+<div id="refs"></div>
+</section>
+
+<section id="s3">
+<div class="card"><h3 class="t">Paraphrase vs. summary</h3>
+<b>Paraphrase</b> = one idea in your own words and your own sentence structure, about the same length as the original.<br>
+<b>Summary</b> = only the main point of a longer text, much shorter than the original.<br>
+Both need a citation. Both are better than a direct quote.</div>
+<div class="card"><h3 class="t">5 paraphrasing techniques</h3>
+<b>1. Change the words:</b> use synonyms (keep technical terms).<br>
+<b>2. Change the word class:</b> “an increase in use” → “use increases”.<br>
+<b>3. Change the structure:</b> active ↔ passive; move the clauses.<br>
+<b>4. Split or combine sentences.</b><br>
+<b>5. Check the meaning</b> against the original, then add a reporting verb and the citation.</div>
+<div class="card"><h3 class="t">4 steps to summarize</h3>
+<b>1.</b> Read the text and find the main idea. <b>2.</b> Note the 2–3 key supporting points. <b>3.</b> Write from memory, in about one third of the length. <b>4.</b> Cite the source.</div>
+<div class="card"><h3 class="t">Example (made-up source)</h3>
+<b>Original (Lee, 2021):</b> “Teenagers who exchange messages with their friends on a daily basis report significantly higher levels of emotional closeness than teenagers who contact friends only occasionally.”<br><br>
+<span class="no"><b>❌ Weak paraphrase</b> (only a few words changed):</span> Lee (2021) finds that teenagers who send messages to friends every day report much higher levels of emotional closeness than teenagers who contact friends only sometimes.<br><br>
+<span class="yes"><b>✅ Good paraphrase:</b></span> Lee (2021) finds that daily messaging makes teens feel much closer to their friends than rare contact does.<br><br>
+<span class="yes"><b>✅ Summary:</b></span> Lee (2021) shows that regular contact strengthens teens’ friendships.</div>
+</section>
+
+<section id="s4"><div id="quiz"></div></section>
+
+<section id="s5">
+<div class="card"><b>Before you submit, tick every box:</b>
+<div id="chk"></div>
+<p class="cnt" id="chkc"></p></div>
+</section>
+
+<section id="s6">
+<div class="card">Fill in your source details and the generator writes the APA 7 reference and the in-text citations. Always check the result: sentence-case titles, alphabetical order, hanging indent. Remember: paraphrase or summarize. Don’t over-rely on direct quotes.</div>
+<div class="card" id="gen"></div>
+<div class="card" id="gout"></div>
+</section>
+</div>
+
+<script>
+var TABS=["Paragraph","Flashcards","APA 7","Paraphrase","Quiz","Checklist","Generator"];
+var STEPS=[
+["Topic sentence","Tag:implicit","State the main idea of the paragraph (the focal point from your thesis statement) as a claim. Don’t announce it.","Social media helps teenagers keep friendships alive over long distances.",'<span class="no">❌ This paragraph discusses… / In this paragraph I will…</span><br><span class="yes">✅ The focal point itself, as a clear statement</span>'],
+["Sub-idea 1","","Your first supporting point, in your own words.","Daily messaging, for instance, keeps friends emotionally connected.",'<span class="cnt">Starters: One reason is… / For instance, … / A key factor is…</span>'],
+["Evidence 1 (Source A)","cite","Paraphrase or summarize Source A. Use a reporting verb in the present simple or present perfect, plus the citation. No past simple.","Lee (2021) finds that teens who message friends every day feel closer to them.",'<span class="cnt">Starters: Lee (2021) has shown that… / … (Lee, 2021)</span>'],
+["Sub-idea 2","","A different second point.","In addition, shared photos let friends take part in each other’s lives.",'<span class="cnt">Starters: In addition, … / Another important factor is…</span>'],
+["Evidence 2 (Source B)","cite","A different source supports this point. Paraphrase or summarize again.","Hassan and Omar (2022) report that photo sharing makes distant friends feel included.",'<span class="cnt">Starters: Similarly, … (Hassan &amp; Omar, 2022). / … , as Omar (2022) points out.</span>'],
+["Sub-idea 3 (optional)","","A third different point, only if your paragraph needs it.","Finally, regular contact helps friends feel supported during difficult times.",'<span class="cnt">Starters: Finally, … / Another benefit is…</span>'],
+["Evidence 3 (Source C) (optional)","cite","A third source supports this point. Paraphrase or summarize again.","Ali et al. (2020) point out that teens who stay in touch online turn to friends more readily for emotional support.",'<span class="cnt">Starters: Similarly, … (Ali et al., 2020). / … , as Ali et al. (2020) note.</span>'],
+["Synthesis","","Connect the sources: do they agree, disagree, or add to each other?","Taken together, these studies show that online contact replaces physical presence with regular, visible attention.",'<span class="cnt">Starters: Taken together, … / While Lee (2021) argues…, Omar (2022) points out…</span>'],
+["Concluding statement","","Summarize the paragraph in one sentence. No new evidence, no new quote.","Overall, digital tools help teenagers sustain friendships that distance would otherwise weaken.",'<span class="cnt">Starters: Overall, … / In short, the evidence shows that…</span>']];
+var VERBS=[
+["⏱ Tense rule","Use the <b>present simple</b> or <b>present perfect</b> to report sources, even for findings and results. No past simple.","Lee (2021) finds that… ✅ / Lee (2021) has found that… ✅"],
+["states","Neutral. Just reports the idea.","Lee (2021) states that sleep affects memory."],
+["notes","Neutral. Mentions a detail.","Ali et al. (2020) note that most schools lack funding."],
+["reports","Neutral. Often used for data.","Hassan (2022) reports that 60% of teens use Instagram daily."],
+["finds / has found","Strong. For research results.","Lee (2021) finds that daily practice improves results."],
+["argues","Strong. The author defends an opinion.","Brown (2019) argues that grammar should be taught in context."],
+["emphasizes","Strong. Stresses what is important.","Omar (2022) emphasizes the need for teacher training."],
+["suggests","Careful. Not 100% sure.","Ali et al. (2020) suggest that stress may reduce performance."],
+["claims","Careful. You may doubt it. Use with caution.","Smith (2018) claims that screens harm creativity."],
+["points out","Draws attention to a fact.","Brown (2019) points out that few studies include teens."],
+["concludes","The final result of a study.","The study concludes that early training prevents injury."],
+["acknowledges","The author admits a limit.","Lee (2021) acknowledges that the sample is small."],
+["has shown / has demonstrated","Present perfect: for results that still matter.","Research has shown that sleep supports memory (Lee, 2021)."],
+["disagrees","An opposing view.","However, Omar (2022) disagrees and says that…"]];
+var APA=[
+["Narrative citation: 2 authors","Hassan and Omar (2022)…","Use the word “and”. The year in brackets comes right after the names."],
+["Parenthetical citation: 2 authors","(Hassan &amp; Omar, 2022)","Inside the brackets use “&amp;”, with a comma before the year."],
+["3 or more authors","(Ali et al., 2020)","Write the first author + et al. from the very first citation."],
+["Reference list: many authors","List all authors (up to 20)","Et al. is only for in-text citations. In the reference list write all the names."],
+["Direct quotation","(Lee, 2021, p. 14)","Rare! Under 40 words: quotation marks + page number. 40+ words: block quote. Paraphrase is usually better."],
+["How many quotes?","Zero or one per paragraph","Don’t over-rely on direct quotes. Paraphrase and summarize instead."],
+["No date available","(Lee, n.d.)","n.d. = no date."],
+["Order in the reference list","Alphabetical by surname","A before B. Hanging indent: the first line at the margin, the other lines indented."],
+["Titles: capital letters","Sentence case","Only the first word and proper nouns start with a capital letter."],
+["Where to put the citation","Before the full stop","… improves results (Lee, 2021). The full stop comes after the bracket."],
+["Secondary source","Lee (as cited in Omar, 2022)","You read Omar, who mentions Lee. Only Omar goes in the References list."],
+["YouTube video","Khalil, R. (2021, March 3). <i>Title</i> [Video]. YouTube. URL","In-text: (Khalil, 2021). The channel name can be the author."]];
+var PAR=[
+["Paraphrase or quote?","Paraphrase (almost always)","Quote only if the exact words matter: a definition or a powerful statement."],
+["Paraphrase = ?","Same idea, your words, your structure","About the same length as the original. Still needs a citation."],
+["Summary = ?","Only the main idea, much shorter","Cite it too. Good for long articles and chapters."],
+["Patchwriting ❌","Changing only a few words","It is still too close to the original. Change the structure too."],
+["Technique 1","Synonyms","Keep technical terms. Change the other words."],
+["Technique 2","Change the word class","“an increase in use” → “use increases”"],
+["Technique 3","Change the structure","Active ↔ passive. Move the clauses. Split or combine sentences."],
+["Do I still cite?","YES, always","Paraphrases and summaries need a citation too."]];
+var decks={v:VERBS,a:APA,p:PAR},dk="v",ix=0,side=0,cur=[];
+var dn={v:"Reporting verbs",a:"APA 7 rules",p:"Paraphrase &amp; quotes"};
+var REFS=[
+["Journal article","Lee, J. K. (2021). Friendship and photo sharing among teens. <i>Journal of Youth Studies, 24</i>(3), 45–60. https://doi.org/xx.xxxx","(Lee, 2021)"],
+["Book","Brown, A. (2019). <i>Writing for university</i> (2nd ed.). Oxford University Press.","(Brown, 2019)"],
+["Webpage","World Health Organization. (2020, March 5). <i>Title of the page in sentence case</i>. https://www.who.int/xxxx","(World Health Organization, 2020)"],
+["YouTube video","Khalil, R. (2021, March 3). <i>How to write a thesis statement</i> [Video]. YouTube. https://www.youtube.com/watch?v=xxxx","(Khalil, 2021)"],
+["Online news article","Ahmed, N. (2022, May 12). Teen sleep habits are changing. <i>Daily News</i>. https://www.dailynews.com/xxxx","(Ahmed, 2022)"],
+["Podcast episode","Hassan, L. (Host). (2021, June 8). Why we love posters (No. 45) [Audio podcast episode]. In <i>Design Talks</i>. Studio Audio. https://xxxx","(Hassan, 2021)"],
+["Film","Villeneuve, D. (Director). (2021). <i>Dune</i> [Film]. Warner Bros.","(Villeneuve, 2021)"],
+["Instagram post","National Geographic [@natgeo]. (2022, April 2). <i>First 20 words of the caption</i> [Photograph]. Instagram. https://www.instagram.com/p/xxxx","(National Geographic, 2022)"],
+["Report by an organization","UNICEF. (2021). <i>Title of the report in sentence case</i>. https://www.unicef.org/xxxx","(UNICEF, 2021)"]];
+var rf=$("refs");
+function $(i){return document.getElementById(i)}
+function st(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+rf=$("refs");
+var rh='<div class="card"><b>Reference examples by source type</b><div class="cnt">Fake details. Copy the pattern, not the content.</div>';
+REFS.forEach(function(r){rh+='<p class="hang"><b>'+r[0]+':</b><br>'+r[1]+'<br><span class="cnt">In-text: '+r[2]+'</span></p>'});
+rf.innerHTML=rh+'</div>';
+var QS=[
+["Which sentence is the best (implicit) topic sentence?",["This paragraph discusses how social media affects friendships.","Social media helps teenagers keep friendships alive over long distances.","In this paragraph, I will talk about social media."],1,"The topic sentence states the focal point itself. It doesn’t announce it."],
+["Which sentence follows the tense rule?",["Lee (2021) found that daily messaging improves closeness.","Lee (2021) finds that daily messaging improves closeness.","Lee (2021) was finding that daily messaging improves closeness."],1,"Use the present simple or present perfect (finds / has found). No past simple."],
+["A source has 4 authors (Ali, Omar, Hassan, and Lee, 2020). Your FIRST in-text citation is…",["(Ali et al., 2020)","(Ali, Omar, Hassan, &amp; Lee, 2020)","(Ali, 2020)"],0,"In APA 7, 3+ authors = first author + et al. from the first citation."],
+["In the reference list, a source with 4 authors…",["lists only the first author + et al.","lists all four authors","lists no authors"],1,"The reference list gives all authors (up to 20). Et al. is only for in-text citations."],
+["When should you use a direct quote?",["As often as possible","Rarely, only when the exact words matter","Never, in any case"],1,"Paraphrase and summarize most of the time. Quote only for a definition or a powerful statement."],
+["Which is a good paraphrase of: “Daily messaging increases teens’ feelings of closeness.”?",["Daily messaging increases teens’ feelings of closeness (Lee, 2021).","Lee (2021) finds that teens feel closer to friends when they message them every day.","Teens like messaging."],1,"The good paraphrase keeps the meaning and changes the words AND structure, and has a citation."],
+["How long is a direct quote that needs a block format?",["10 words or more","40 words or more","100 words or more"],1,"40+ words = block quote. Better still: paraphrase."],
+["How do you cite a YouTube video in the reference list?",["Channel/Author. (Year, Month Day). <i>Title</i> [Video]. YouTube. URL","Title. YouTube. URL","Author, Year, YouTube"],0,"Author. (Date). Title [Video]. YouTube. URL."],
+["The citation goes…",["after the full stop","before the full stop","anywhere"],1,"… improves results (Lee, 2021)."],
+["Synthesis means…",["Copying two sources one after another","Showing how the sources relate to each other","Quoting only one source"],1,"Compare the sources: they agree, disagree, or add to each other."]];
+var CHK=["My topic sentence states the focal point as a claim (no “This paragraph discusses…”).","This body paragraph matches the right focal point from my thesis statement.","Each sub-idea is in my own words and has evidence from a source.","I used at least two different sources, and I synthesized them.","I used reporting verbs in the present simple or present perfect (no past simple).","Most evidence is paraphrased or summarized. I have zero or one short direct quote.","Every paraphrase and summary has a citation.","I ended with a concluding statement (no new evidence).","In-text citations follow APA 7 (author, year, “&amp;”, et al. for 3+ authors).","Every in-text citation is in the References list, and the other way round.","References are alphabetical with a hanging indent. The format fits the source type (video, article, book…).","I checked grammar, spelling and tenses."];
+var tb=$("tabs");
+TABS.forEach(function(t,i){var b=document.createElement("button");b.textContent=t;b.setAttribute("role","tab");b.onclick=function(){show(i)};tb.appendChild(b)});
+function show(n){[].forEach.call(tb.children,function(b,i){b.setAttribute("aria-selected",i==n)});for(var i=0;i<TABS.length;i++)$("s"+i).className=i==n?"on":""}
+STEPS.forEach(function(s,i){var d=document.createElement("div");d.className="card step";var tg=s[1]=="cite"?'<span class="tag">cite!</span>':(s[1]?'<span class="tag">implicit</span>':'');d.innerHTML='<div class="num">'+(i+1)+'</div><div><h3>'+s[0]+tg+'</h3><p>'+s[2]+'</p><div class="frame"><b>Example:</b> '+s[3]+'</div>'+(s[4]?'<p>'+s[4]+'</p>':'')+'</div>';$("steps").appendChild(d)});
+Object.keys(decks).forEach(function(k){var b=document.createElement("button");b.className="btn";b.innerHTML=dn[k];b.onclick=function(){dk=k;cur=decks[k].slice();ix=0;side=0;draw()};b.id="d"+k;$("decks").appendChild(b)});
+function draw(){var c=cur[ix],h;
+if(dk=="v"){h=side?'<div>'+c[1]+'</div><p><i>'+c[2]+'</i></p>':'<div class="big">'+c[0]+'</div><div class="hint">tap to flip</div>'}
+else{h=side?'<div class="big" style="font-size:1.2rem">'+c[1]+'</div><p>'+c[2]+'</p>':'<div class="big" style="font-size:1.25rem">'+c[0]+'</div><div class="hint">tap to flip</div>'}
+$("fc").innerHTML=h;$("cnt").textContent=(ix+1)+" / "+cur.length;
+Object.keys(decks).forEach(function(k){$("d"+k).setAttribute("aria-pressed",k==dk)})}
+$("fc").onclick=function(){side=1-side;draw()};
+$("fc").onkeydown=function(e){if(e.key==" "||e.key=="Enter"){e.preventDefault();side=1-side;draw()}};
+$("next").onclick=function(){ix=(ix+1)%cur.length;side=0;draw()};
+$("prev").onclick=function(){ix=(ix-1+cur.length)%cur.length;side=0;draw()};
+$("shuf").onclick=function(){cur.sort(function(){return Math.random()-.5});ix=0;side=0;draw()};
+cur=VERBS.slice();draw();
+var qi=0,score=0;
+function quiz(){var q=$("quiz");
+if(qi>=QS.length){q.innerHTML='<div class="card"><h3>Done! Score: '+score+' / '+QS.length+'</h3><button class="btn p" id="rq">Try again</button></div>';$("rq").onclick=function(){qi=0;score=0;quiz()};return}
+var Q=QS[qi];q.innerHTML='<div class="card"><div class="cnt">Question '+(qi+1)+' of '+QS.length+'</div><p><b>'+Q[0]+'</b></p><div id="os"></div><div class="fb" id="fb"></div><div id="nx"></div></div>';
+Q[1].forEach(function(o,i){var b=document.createElement("button");b.className="opt";b.innerHTML=o;b.onclick=function(){
+var all=$("os").children;for(var j=0;j<all.length;j++){all[j].disabled=true}
+if(i==Q[2]){score++;b.className="opt ok";$("fb").textContent="✅ Correct! "+Q[3]}else{b.className="opt bad";all[Q[2]].className="opt ok";$("fb").textContent="❌ Not quite. "+Q[3]}
+$("nx").innerHTML='<button class="btn p" style="margin-top:10px" id="nq">Next</button>';$("nq").onclick=function(){qi++;quiz()}};$("os").appendChild(b)})}
+quiz();
+var cs={};try{cs=JSON.parse(st("chk")||"{}")}catch(e){}
+function cc(){var n=0;CHK.forEach(function(_,i){if(cs[i])n++});$("chkc").textContent=n+" of "+CHK.length+" done"+(n==CHK.length?" 🎉 Ready to submit!":"")}
+CHK.forEach(function(t,i){var l=document.createElement("label");l.className="ck";var c=document.createElement("input");c.type="checkbox";c.checked=!!cs[i];c.onchange=function(){cs[i]=c.checked;st("chk",JSON.stringify(cs));cc()};l.appendChild(c);var s=document.createElement("span");s.innerHTML=t;l.appendChild(s);$("chk").appendChild(l)});cc();
+// generator
+var MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+var FL={authors:["Authors (one per line: Last name, First name)","t"],year:["Year","i"],month:["Month","m"],day:["Day","i"],title:["Title","i"],container:["Container","i"],volume:["Volume","i"],issue:["Issue","i"],pages:["Pages (e.g. 45–60)","i"],edition:["Edition (e.g. 2nd)","i"],publisher:["Publisher","i"],episode:["Episode number","i"],username:["Username (without @)","i"],kind:["Type (Photograph, Video, Post)","i"],platform:["Platform","i"],url:["URL or DOI link","i"]};
+var GT={
+journal:{n:"Journal article",f:["authors","year","title","container","volume","issue","pages","url"],l:{title:"Article title (sentence case)",container:"Journal name",url:"DOI link (https://doi.org/…)"}},
+book:{n:"Book",f:["authors","year","title","edition","publisher","url"],l:{title:"Book title",url:"DOI or URL (optional)"}},
+web:{n:"Webpage",f:["authors","year","month","day","title","container","url"],l:{title:"Page title",container:"Website name"}},
+video:{n:"YouTube video",g:1,f:["authors","year","month","day","title","url"],l:{authors:"Channel name (or uploader)",title:"Video title"}},
+news:{n:"News article",f:["authors","year","month","day","title","container","url"],l:{title:"Article title (sentence case)",container:"Newspaper name"}},
+blog:{n:"Blog post",f:["authors","year","month","day","title","container","url"],l:{title:"Post title",container:"Blog name"}},
+podcast:{n:"Podcast episode",f:["authors","year","month","day","title","episode","container","publisher","url"],l:{authors:"Host (Last name, First name)",title:"Episode title",container:"Podcast name",publisher:"Production company"}},
+social:{n:"Social media post",g:1,f:["authors","username","year","month","day","title","kind","platform","url"],l:{authors:"Name of the account owner",title:"First 20 words of the post"}},
+report:{n:"Report by an organization",g:1,f:["authors","year","title","publisher","url"],l:{authors:"Organization",title:"Report title",publisher:"Publisher (only if different from the author)"}}};
+var gt="journal",V={group:false};
+function esc(x){return (x||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function g(k){return esc((V[k]||"").trim())}
+function endp(x){return /[.?!](<\/i>)?$/.test(x)?x:x+"."}
+function ini(fn){return fn.trim().split(/\s+/).map(function(w){return w.split("-").map(function(x){return x.charAt(0).toUpperCase()+"."}).join("-")}).join(" ")}
+function pa(txt,grp){var out=[];(txt||"").split("\n").map(function(l){return l.trim()}).filter(Boolean).forEach(function(l){
+if(grp){out.push({s:l,r:l});return}
+var last,first;if(l.indexOf(",")>-1){last=l.split(",")[0].trim();first=l.split(",").slice(1).join(" ").trim()}else{var w=l.split(/\s+/);last=w.pop();first=w.join(" ")}
+out.push({s:last,r:first?last+", "+ini(first):last})});return out}
+function rlist(a){var r=a.map(function(x){return x.r});if(r.length==1)return r[0];
+if(r.length>20)return r.slice(0,19).join(", ")+", . . . "+r[r.length-1];
+return r.slice(0,-1).join(", ")+", & "+r[r.length-1]}
+function names(sur,first,narr){var n=sur.length,amp=narr?" and ":" & ";if(n==1)return sur[0];if(n==2)return sur[0]+amp+sur[1];
+return sur[0]+" et al."}
+function ds(full){var y=g("year");if(!y)return "n.d.";if(!full)return y;return y+(V.month?", "+V.month+(g("day")?" "+g("day"):""):"")}
+function gout(){var t=gt,A=pa(esc(V.authors),V.group),au=A.length?rlist(A):"",d=ds(t!="journal"&&t!="book"&&t!="report"),ti=g("title"),url=g("url"),T="",rest=[],ital=false,ex="";
+if(!au&&!ti){$("gout").innerHTML='<b>Your result</b><p class="cnt">Fill in the form to see your reference.</p>';return}
+if(t=="journal"){T=ti;rest=[g("container")?"<i>"+g("container")+(g("volume")?", "+g("volume"):"")+"</i>"+(g("issue")?"("+g("issue")+")":"")+(g("pages")?", "+g("pages"):"")+".":"",url]}
+else if(t=="book"){ital=true;T="<i>"+ti+"</i>"+(g("edition")?" ("+g("edition")+" ed.)":"");rest=[g("publisher")&&endp(g("publisher")),url]}
+else if(t=="web"){ital=true;T="<i>"+ti+"</i>";rest=[g("container")&&g("container")!=au.replace(/\.$/,"")?endp(g("container")):"",url]}
+else if(t=="video"){ital=true;T="<i>"+ti+"</i> [Video]";rest=[endp(g("platform")||"YouTube"),url]}
+else if(t=="news"||t=="blog"){T=ti;rest=[g("container")?"<i>"+g("container")+"</i>.":"",url]}
+else if(t=="podcast"){T=ti+(g("episode")?" (No. "+g("episode")+")":"")+" [Audio podcast episode]";ex=" (Host)";rest=[g("container")?"In <i>"+g("container")+"</i>.":"",g("publisher")&&endp(g("publisher")),url]}
+else if(t=="social"){ital=true;T="<i>"+ti+"</i> ["+(g("kind")||"Post")+"]";ex=g("username")?" [@"+g("username")+"]":"";rest=[g("platform")&&endp(g("platform")),url]}
+else{ital=true;T="<i>"+ti+"</i>";rest=[g("publisher")&&endp(g("publisher")),url]}
+var first;if(au){first=endp(au+ex)}else{first=endp(T);T=""}
+var ref=[first,"("+d+").",T&&endp(T)].concat(rest).filter(Boolean).join(" ");
+var yr=g("year")||"n.d.",L="";
+function box(h,x){return '<div class="out"><small>'+h+'</small>'+x+'</div>'}
+if(A.length){var sur=A.map(function(x){return x.s}),n=sur.length;
+{L=box("In-text (parenthetical)","("+names(sur,1,0)+", "+yr+")")+box("In-text (narrative)",names(sur,1,1)+" ("+yr+")")}}
+else{var w=ti.split(/\s+/),sh=w.slice(0,4).join(" ")+(w.length>4?"…":"");var nm=ital?"<i>"+sh+"</i>":"“"+sh+"”";L=box("In-text (no author: use the title)","("+nm+", "+yr+")  ·  "+nm+" ("+yr+")")}
+$("gout").innerHTML='<b>Your result</b><div class="out hang" id="gref"><small>Reference list</small>'+ref+'</div>'+L+'<button class="btn p" id="gcopy">Copy reference</button> <span class="cnt" id="gmsg"></span>';
+$("gcopy").onclick=function(){var h=$("gref").innerHTML.replace(/<small>.*?<\/small>/,"");var tx=h.replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">");
+function ok(){$("gmsg").textContent="Copied ✓"}function no(){$("gmsg").textContent="Select the text and copy it manually."}
+try{if(window.ClipboardItem){navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([h],{type:"text/html"}),"text/plain":new Blob([tx],{type:"text/plain"})})]).then(ok,no)}else{navigator.clipboard.writeText(tx).then(ok,no)}}catch(e){no()}}}
+function gform(){var T=GT[gt],h='<label class="gl" for="gtype">Source type</label><select class="in" id="gtype">'+Object.keys(GT).map(function(k){return '<option value="'+k+'"'+(k==gt?" selected":"")+'>'+GT[k].n+'</option>'}).join("")+'</select>';
+T.f.forEach(function(k){var lb=(T.l&&T.l[k])||FL[k][0],ty=FL[k][1],v=esc(V[k]||"");
+h+='<label class="gl" for="g_'+k+'">'+lb+'</label>';
+if(ty=="t")h+='<textarea class="in" rows="3" id="g_authors" placeholder="Lee, Jin Kyung">'+v+'</textarea><label class="ck"><input type="checkbox" id="g_group"'+(V.group?" checked":"")+'><span>This is a group, channel, or organization name (not a person)</span></label>';
+else if(ty=="m")h+='<select class="in" id="g_month"><option value="">—</option>'+MON.map(function(m){return '<option'+(V.month==m?" selected":"")+'>'+m+'</option>'}).join("")+'</select>';
+else h+='<input class="in" type="text" id="g_'+k+'" value="'+v+'">'});
+h+='<p><button class="btn" id="gclr">Clear form</button></p>';$("gen").innerHTML=h;
+$("gtype").onchange=function(){gt=this.value;V.group=!!GT[gt].g;gform();gout()};
+T.f.forEach(function(k){var e=$("g_"+k);e.oninput=e.onchange=function(){V[k]=this.value;gout()}});
+var gc=$("g_group");if(gc)gc.onchange=function(){V.group=this.checked;gout()};
+$("gclr").onclick=function(){V={group:!!GT[gt].g};gform();gout()}}
+gform();gout();
+
+show(0);
+</script>
+</body>
+</html>
